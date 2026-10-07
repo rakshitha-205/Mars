@@ -3,6 +3,10 @@
 
 ChatConnect is a modern, real-time, human-to-human communication platform engineered on **Material Design 3 (M3)** principles and powered by **Aiven Cloud** architecture (**Aiven PostgreSQL**, **Aiven Apache Kafka**, and **Aiven Valkey**).
 
+> 🌐 **Live Website:** [https://mars-phnt.vercel.app/](https://mars-phnt.vercel.app/)  
+> 📑 **Full Live Deployment & Architecture Report:** [LIVE_DEPLOYMENT_REPORT.md](./LIVE_DEPLOYMENT_REPORT.md)  
+> 🛡️ **Live Telemetry API:** [https://mars-phnt.vercel.app/api/aiven/status](https://mars-phnt.vercel.app/api/aiven/status)
+
 ---
 
 ## 🏗️ Architecture Overview
