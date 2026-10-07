@@ -24,25 +24,29 @@
     {
       "source": "/api",
       "destination": {
-        "service": "backend"
+        "service": "backend",
+        "path": "/api"
       }
     },
     {
       "source": "/api/(.*)",
       "destination": {
-        "service": "backend"
+        "service": "backend",
+        "path": "/api/$1"
       }
     },
     {
       "source": "/socket.io/(.*)",
       "destination": {
-        "service": "backend"
+        "service": "backend",
+        "path": "/socket.io/$1"
       }
     },
     {
       "source": "/(.*)",
       "destination": {
-        "service": "frontend"
+        "service": "frontend",
+        "path": "/$1"
       }
     }
   ]
