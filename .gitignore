@@ -7,9 +7,6 @@ frontend/node_modules/
 frontend/.next/
 frontend/out/
 
-# TypeScript compiler build output
-backend/dist/
-
 # Logs
 *.log
 npm-debug.log*
