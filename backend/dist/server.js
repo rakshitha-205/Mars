@@ -29,10 +29,11 @@ app.use((req, res, next) => {
     }
     next();
 });
-// Mount API routes
+// Mount API routes at both /api and root to support all Vercel rewrite formats
 app.use('/api', routes_1.default);
-// Root health check
-app.get('/', (req, res) => {
+app.use('/', routes_1.default);
+// Root & API health check
+const healthCheck = (req, res) => {
     res.json({
         app: 'ChatConnect',
         tagline: 'Connect. Communicate. Collaborate.',
@@ -41,13 +42,17 @@ app.get('/', (req, res) => {
         docs: '/docs',
         aivenStatus: '/api/aiven/status',
     });
-});
+};
+app.get('/', healthCheck);
+app.get('/api', healthCheck);
+app.get('/health', healthCheck);
+app.get('/api/health', healthCheck);
 // Global error handling
 app.use((err, req, res, next) => {
     console.error('[UNHANDLED ERROR]', err);
     res.status(500).json({
         error: 'Internal server error',
-        message: config_1.config.nodeEnv === 'development' ? err.message : 'An unexpected error occurred.',
+        message: err?.message || 'An unexpected error occurred.',
     });
 });
 // Initialize Socket.IO with CORS
@@ -61,8 +66,15 @@ const io = new socket_io_1.Server(server, {
 });
 exports.io = io;
 (0, websocket_1.initializeWebSocket)(io);
-// Start Server (only in non-serverless / local environments)
-if (!process.env.VERCEL) {
+// Determine if running inside a serverless / lambda environment
+const isServerless = Boolean(process.env.VERCEL ||
+    process.env.VERCEL_ENV ||
+    process.env.NOW_REGION ||
+    process.env.AWS_LAMBDA_FUNCTION_NAME ||
+    process.env.LAMBDA_TASK_ROOT ||
+    (process.env.NODE_ENV === 'production' && !process.env.PORT));
+// Start Server (only in non-serverless / local environments when directly executed)
+if (!isServerless && typeof require !== 'undefined' && require.main === module) {
     server.listen(config_1.config.port, () => {
         console.log('============================================================');
         console.log(` CHATCONNECT BACKEND SERVICE RUNNING ON PORT ${config_1.config.port}`);
@@ -72,10 +84,16 @@ if (!process.env.VERCEL) {
         console.log('============================================================');
     });
 }
-// Process signal handling
+// Process signal & error handling
 process.on('SIGTERM', () => {
     console.log('[SHUTDOWN] Gracefully terminating server...');
     server.close(() => process.exit(0));
+});
+process.on('uncaughtException', (err) => {
+    console.error('[UNCAUGHT EXCEPTION]', err);
+});
+process.on('unhandledRejection', (reason) => {
+    console.error('[UNHANDLED REJECTION]', reason);
 });
 // Export Express application for Vercel and serverless environments
 module.exports = app;
