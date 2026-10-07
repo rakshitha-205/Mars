@@ -113,6 +113,11 @@ class ValkeyClientService {
           lazyConnect: true,
         });
 
+        this.redisClient.on('error', (err) => {
+          console.warn('[VALKEY] Redis error event caught:', err.message);
+          this.isUsingAivenValkey = false;
+        });
+
         this.redisClient
           .connect()
           .then(() => {

@@ -2,7 +2,7 @@
   "name": "chatconnect-backend",
   "version": "1.0.0",
   "description": "ChatConnect API & Real-Time Event Backend",
-  "main": "src/server.ts",
+  "main": "dist/server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
@@ -20,6 +20,7 @@
     "kafkajs": "^2.2.4",
     "pg": "^8.11.5",
     "socket.io": "^4.7.5",
+    "typescript": "^5.4.5",
     "uuid": "^9.0.1",
     "zod": "^3.23.8"
   },
@@ -32,7 +33,6 @@
     "@types/pg": "^8.11.5",
     "@types/uuid": "^9.0.8",
     "socket.io-client": "^4.8.4",
-    "tsx": "^4.7.2",
-    "typescript": "^5.4.5"
+    "tsx": "^4.7.2"
   }
 }

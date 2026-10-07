@@ -64,15 +64,17 @@ const io = new SocketIOServer(server, {
 
 initializeWebSocket(io);
 
-// Start Server
-server.listen(config.port, () => {
-  console.log('============================================================');
-  console.log(` CHATCONNECT BACKEND SERVICE RUNNING ON PORT ${config.port}`);
-  console.log(' Tagline: "Connect. Communicate. Collaborate."');
-  console.log(` Mode: ${config.nodeEnv}`);
-  console.log(` Aiven Status API: http://localhost:${config.port}/api/aiven/status`);
-  console.log('============================================================');
-});
+// Start Server (only in non-serverless / local environments)
+if (!process.env.VERCEL) {
+  server.listen(config.port, () => {
+    console.log('============================================================');
+    console.log(` CHATCONNECT BACKEND SERVICE RUNNING ON PORT ${config.port}`);
+    console.log(' Tagline: "Connect. Communicate. Collaborate."');
+    console.log(` Mode: ${config.nodeEnv}`);
+    console.log(` Aiven Status API: http://localhost:${config.port}/api/aiven/status`);
+    console.log('============================================================');
+  });
+}
 
 // Process signal handling
 process.on('SIGTERM', () => {
@@ -81,6 +83,13 @@ process.on('SIGTERM', () => {
 });
 
 // Export Express application for Vercel and serverless environments
+module.exports = app;
+module.exports.default = app;
+module.exports.app = app;
+module.exports.server = server;
+module.exports.io = io;
+
 export default app;
 export { app, server, io };
+
 

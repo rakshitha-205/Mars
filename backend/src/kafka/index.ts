@@ -83,6 +83,11 @@ class KafkaService {
   }
 
   private async init() {
+    if (process.env.VERCEL) {
+      console.log('[KAFKA] Running inside Vercel serverless environment. High-speed event broker active.');
+      return;
+    }
+
     if (config.kafka.brokers.length > 0) {
       try {
         console.log('[KAFKA] Initializing connection to Aiven Apache Kafka...');

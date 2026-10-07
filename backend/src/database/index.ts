@@ -316,6 +316,11 @@ class DatabaseManager {
           ssl: { rejectUnauthorized: false },
           max: 20,
           idleTimeoutMillis: 30000,
+          connectionTimeoutMillis: 5000,
+        });
+
+        this.pool.on('error', (err) => {
+          console.warn('[DATABASE] Idle client pool error caught:', err.message);
         });
 
         const client = await this.pool.connect();
