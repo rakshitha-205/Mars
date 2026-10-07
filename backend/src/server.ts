@@ -79,3 +79,8 @@ process.on('SIGTERM', () => {
   console.log('[SHUTDOWN] Gracefully terminating server...');
   server.close(() => process.exit(0));
 });
+
+// Export Express application for Vercel and serverless environments
+export default app;
+export { app, server, io };
+

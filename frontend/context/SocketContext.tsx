@@ -35,7 +35,11 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       return;
     }
 
-    const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:5000';
+    const socketUrl =
+      process.env.NEXT_PUBLIC_SOCKET_URL ||
+      (typeof window !== 'undefined'
+        ? window.location.origin
+        : (process.env.BACKEND_URL || 'http://localhost:5000'));
     const s = ClientSocket(socketUrl, {
       auth: { token },
       transports: ['websocket', 'polling'],

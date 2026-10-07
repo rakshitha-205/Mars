@@ -5,12 +5,19 @@ const nextConfig = {
     domains: ['images.unsplash.com', 'lh3.googleusercontent.com'],
   },
   async rewrites() {
+    const backendTarget =
+      process.env.BACKEND_URL ||
+      process.env.NEXT_PUBLIC_API_URL ||
+      'http://localhost:5000';
+
     return [
       {
         source: '/api/:path*',
-        destination: process.env.NEXT_PUBLIC_API_URL
-          ? `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`
-          : 'http://localhost:5000/api/:path*',
+        destination: `${backendTarget.replace(/\/$/, '')}/api/:path*`,
+      },
+      {
+        source: '/socket.io/:path*',
+        destination: `${backendTarget.replace(/\/$/, '')}/socket.io/:path*`,
       },
     ];
   },
