@@ -22,31 +22,9 @@
   },
   "rewrites": [
     {
-      "source": "/api",
-      "destination": {
-        "service": "backend",
-        "path": "/api"
-      }
-    },
-    {
-      "source": "/api/(.*)",
-      "destination": {
-        "service": "backend",
-        "path": "/api/$1"
-      }
-    },
-    {
-      "source": "/socket.io/(.*)",
-      "destination": {
-        "service": "backend",
-        "path": "/socket.io/$1"
-      }
-    },
-    {
       "source": "/(.*)",
       "destination": {
-        "service": "frontend",
-        "path": "/$1"
+        "service": "frontend"
       }
     }
   ]
